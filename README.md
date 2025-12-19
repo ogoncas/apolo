@@ -1,2 +1,2 @@
-# apolo
-Esta é uma linguagem baseada em pilha (stack-based), projetada para ser simples, educacional e compacta.
+# Compilation:
+```` gcc main.c vm.c compiler.c scanner.c chunk.c value.c object.c table.c -o apolo ````
