@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apolo Language</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #FFD700;
+            --secondary-blue: #4169E1;
+            --text-dark: #333333;
+            --bg-light: #F9FAFB;
+            --bg-white: #FFFFFF;
+            --accent-gray: #6B7280;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: var(--secondary-blue);
+            color: var(--bg-white);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            font-size: 3em;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+        }
+
+        nav {
+            margin-top: 20px;
+        }
+
+        nav a {
+            color: var(--bg-white);
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-gold);
+        }
+
+        section {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 40px;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--secondary-blue);
+            border-bottom: 3px solid var(--primary-gold);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary-gold);
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            background-color: #f4f4f9;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        ul li::before {
+            content: '➤';
+            position: absolute;
+            left: 0;
+            color: var(--primary-gold);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--secondary-blue);
+            color: var(--bg-white);
+            margin-top: 60px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            section {
+                padding: 20px;
+                margin: 30px 20px;
+            }
+        }
+
+        /* Simple syntax highlighting */
+        .keyword { color: #0000ff; font-weight: bold; }
+        .string { color: #a31515; }
+        .number { color: #09885a; }
+        .comment { color: #008000; font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Apolo Language</h1>
+        <p>A dynamic scripting language inspired by the harmony and precision of the Greek god Apollo.</p>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#docs">Documentation</a>
+            <a href="#examples">Examples</a>
+        </nav>
+    </header>
+
+    <section id="about">
+        <h2>About Apolo</h2>
+        <p>Apolo is a lightweight, interpreted programming language designed for simplicity, performance, and ease of use. Drawing inspiration from the Greek god Apollo—symbol of light, knowledge, and the arts—Apolo aims to bring clarity and elegance to scripting and rapid development.</p>
+        <p>Version: 2.0 | Date: December 19, 2025</p>
+    </section>
+
+    <section id="features">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Dynamic typing supporting numbers, booleans, strings, and nil values.</li>
+            <li>Local and global variables with proper scoping.</li>
+            <li>Control structures including if-else statements and while loops.</li>
+            <li>Arithmetic, comparison, and logical operators.</li>
+            <li>Built-in I/O functions: print and input.</li>
+            <li>Interactive REPL for quick testing and experimentation.</li>
+            <li>Efficient string interning and hash table implementations.</li>
+            <li>Robust error handling for both compilation and runtime issues.</li>
+        </ul>
+    </section>
+
+    <section id="docs">
+        <h2>Documentation</h2>
+        <p>Apolo's syntax is intuitive and beginner-friendly. Below is a quick reference guide:</p>
+        
+        <h3>Declaring Variables</h3>
+        <pre><code>var x = 10;
+var name = "Apolo";</code></pre>
+        
+        <h3>Control Flow Structures</h3>
+        <pre><code>if (x > 5) {
+    print "Greater than 5";
+} else {
+    print "5 or less";
+}
+
+while (x > 0) {
+    print x;
+    x = x - 1;
+}</code></pre>
+        
+        <h3>Input and Output</h3>
+        <pre><code>var userInput = input();
+print "Welcome, " + userInput;</code></pre>
+        
+        <p>For complete source code, implementation details, and contributions, visit our repository.</p>
+    </section>
+
+    <section id="examples">
+        <h2>Code Examples</h2>
+        
+        <pre id="example-code"><code>var a = 5;
+var b = 3;
+print a + b;  # Outputs: 8
+
+var greeting = "Hello" + " World";
+print greeting;  # Outputs: Hello World</code></pre>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Apolo Language. All rights reserved.</p>
+        <p>Source available on GitHub (hypothetical link).</p>
+    </footer>
+</body>
+</html>
