@@ -11,7 +11,7 @@
 static Obj* allocateObject(size_t size, ObjType type) {
     Obj* object = (Obj*)malloc(size);
     object->type = type;
-    object->next = vm.objects; // Insere na lista global da VM
+    object->next = vm.objects;
     vm.objects = object;
     return object;
 }
@@ -30,7 +30,6 @@ static ObjString* allocateString(char* chars, int length, uint32_t hash) {
     string->length = length;
     string->chars = chars;
     string->hash = hash;
-    // Internar string
     tableSet(&vm.strings, string, NIL_VAL);
     return string;
 }

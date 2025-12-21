@@ -20,7 +20,7 @@ typedef struct {
     Value* stackTop;
     Table globals;
     Table strings;
-    Obj* objects; // Cabeça da lista de objetos para GC
+    Obj* objects;
 } VM;
 
 extern VM vm;

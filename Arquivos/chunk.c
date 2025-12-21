@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include "chunk.h"
 
-// initValueArray, writeValueArray, freeValueArray estão agora em value.c
-
 void initChunk(Chunk* chunk) {
     chunk->count = 0;
     chunk->capacity = 0;

@@ -10,7 +10,7 @@ typedef enum {
 
 struct Obj {
     ObjType type;
-    struct Obj* next; // Lista ligada para Garbage Collection simples
+    struct Obj* next;
 };
 
 struct ObjString {
@@ -28,7 +28,6 @@ static inline bool isObjType(Value value, ObjType type) {
     return IS_OBJ(value) && AS_OBJ(value)->type == type;
 }
 
-// --- MACROS ADICIONADAS AQUI ---
 #define OBJ_TYPE(value)        (AS_OBJ(value)->type)
 
 #define IS_STRING(value)       isObjType(value, OBJ_STRING)

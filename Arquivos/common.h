@@ -7,7 +7,7 @@
 
 typedef uint8_t Byte;
 
-// Descomente para debugar
+// Uncomment to debug
 // #define DEBUG_TRACE_EXECUTION 
 // #define DEBUG_PRINT_CODE
 

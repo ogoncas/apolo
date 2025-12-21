@@ -23,7 +23,7 @@ static void runtimeError(VM* vmptr, const char* format, ...) {
 
     size_t instruction = vmptr->ip - vmptr->chunk->code - 1;
     int line = vmptr->chunk->lines[instruction];
-    fprintf(stderr, "[Linha %d] no script\n", line);
+    fprintf(stderr, "[Line %d] in script\n", line);
     resetStack(vmptr);
 }
 
@@ -90,7 +90,7 @@ static InterpretResult run(VM* vmptr) {
     #define BINARY_OP(valueType, op) \
         do { \
             if (!IS_NUMBER(peek(vmptr, 0)) || !IS_NUMBER(peek(vmptr, 1))) { \
-                runtimeError(vmptr, "Operandos devem ser números."); \
+                runtimeError(vmptr, "Operands must be numbers."); \
                 return INTERPRET_RUNTIME_ERROR; \
             } \
             double b = AS_NUMBER(pop(vmptr)); \
@@ -121,7 +121,7 @@ static InterpretResult run(VM* vmptr) {
                 ObjString* name = READ_STRING();
                 Value value;
                 if (!tableGet(&vmptr->globals, name, &value)) {
-                    runtimeError(vmptr, "Variável indefinida '%s'.", name->chars);
+                    runtimeError(vmptr, "Undefined variable '%s'.", name->chars);
                     return INTERPRET_RUNTIME_ERROR;
                 }
                 push(vmptr, value);
@@ -137,7 +137,7 @@ static InterpretResult run(VM* vmptr) {
                 ObjString* name = READ_STRING();
                 if (tableSet(&vmptr->globals, name, peek(vmptr, 0))) {
                     tableDelete(&vmptr->globals, name);
-                    runtimeError(vmptr, "Variável indefinida '%s'.", name->chars);
+                    runtimeError(vmptr, "Undefined variable '%s'.", name->chars);
                     return INTERPRET_RUNTIME_ERROR;
                 }
                 break;
@@ -159,7 +159,7 @@ static InterpretResult run(VM* vmptr) {
                     double a = AS_NUMBER(pop(vmptr));
                     push(vmptr, NUMBER_VAL(a + b));
                 } else {
-                    runtimeError(vmptr, "Operandos devem ser dois números ou duas strings.");
+                    runtimeError(vmptr, "Operands must be two numbers or two strings.");
                     return INTERPRET_RUNTIME_ERROR;
                 }
                 break;
@@ -170,7 +170,7 @@ static InterpretResult run(VM* vmptr) {
             case OP_NOT:      push(vmptr, BOOL_VAL(isFalsey(pop(vmptr)))); break;
             case OP_NEGATE:   
                 if (!IS_NUMBER(peek(vmptr, 0))) {
-                     runtimeError(vmptr, "Operando deve ser número.");
+                     runtimeError(vmptr, "Operand must be a number.");
                      return INTERPRET_RUNTIME_ERROR;
                 }
                 push(vmptr, NUMBER_VAL(-AS_NUMBER(pop(vmptr)))); 

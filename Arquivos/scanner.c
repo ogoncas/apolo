@@ -115,8 +115,8 @@ static Token string() {
         if (peek() == '\n') scanner.line++;
         advance();
     }
-    if (isAtEnd()) return errorToken("String não terminada.");
-    advance(); // Fecha aspas
+    if (isAtEnd()) return errorToken("Unterminated string.");
+    advance();
     return makeToken(TOKEN_STRING);
 }
 
@@ -147,5 +147,5 @@ Token scanToken() {
         case '>': return makeToken(match('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
         case '"': return string();
     }
-    return errorToken("Caractere inesperado.");
+    return errorToken("Unexpected character.");
 }

@@ -71,8 +71,6 @@ bool tableDelete(Table* table, ObjString* key) {
     if (table->count == 0) return false;
     Entry* entry = findEntry(table->entries, table->capacity, key);
     if (entry->key == NULL) return false;
-    // Place holder deletion (tombstone) not implemented for simplicity, just nullify
-    // Para um sistema robusto, usaríamos tombstones.
     entry->key = NULL; 
     entry->value = NIL_VAL;
     return true;

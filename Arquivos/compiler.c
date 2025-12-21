@@ -47,9 +47,9 @@ static Chunk* currentChunk() { return compilingChunk; }
 static void errorAt(Token* token, const char* message) {
     if (parser.panicMode) return;
     parser.panicMode = true;
-    fprintf(stderr, "[Linha %d] Erro", token->line);
-    if (token->type == TOKEN_EOF) fprintf(stderr, " no final");
-    else if (token->type != TOKEN_ERROR) fprintf(stderr, " em '%.*s'", token->length, token->start);
+    fprintf(stderr, "[Line %d] Error", token->line);
+    if (token->type == TOKEN_EOF) fprintf(stderr, " at end");
+    else if (token->type != TOKEN_ERROR) fprintf(stderr, " at '%.*s'", token->length, token->start);
     fprintf(stderr, ": %s\n", message);
     parser.hadError = true;
 }
@@ -78,7 +78,7 @@ static void emitReturn() { emitByte(OP_RETURN); }
 
 static int makeConstant(Value value) {
     int constant = addConstant(currentChunk(), value);
-    if (constant > 255) { errorAtCurrent("Muitas constantes em um chunk."); return 0; }
+    if (constant > 255) { errorAtCurrent("Too many constants in one chunk."); return 0; }
     return constant;
 }
 
@@ -129,7 +129,7 @@ static void literal(bool canAssign) {
 
 static void grouping(bool canAssign) {
     expression();
-    consume(TOKEN_RIGHT_PAREN, "Esperado ')' após expressão.");
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after expression.");
 }
 
 static void number(bool canAssign) {
@@ -187,8 +187,8 @@ static void unary(bool canAssign) {
 }
 
 static void inputExpr(bool canAssign) {
-    consume(TOKEN_LEFT_PAREN, "Esperado '(' após 'input'.");
-    consume(TOKEN_RIGHT_PAREN, "Esperado ')' após 'input'.");
+    consume(TOKEN_LEFT_PAREN, "Expect '(' after 'input'.");
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after 'input'.");
     emitByte(OP_INPUT);
 }
 
@@ -237,7 +237,7 @@ static ParseRule* getRule(TokenType type) { return &rules[type]; }
 static void parsePrecedence(Precedence precedence) {
     advance();
     ParseFn prefixRule = getRule(parser.previous.type)->prefix;
-    if (prefixRule == NULL) { errorAtCurrent("Esperada expressão."); return; }
+    if (prefixRule == NULL) { errorAtCurrent("Expect expression."); return; }
     bool canAssign = precedence <= PREC_ASSIGNMENT;
     prefixRule(canAssign);
     while (precedence <= getRule(parser.current.type)->precedence) {
@@ -253,7 +253,7 @@ static void block() {
     while (parser.current.type != TOKEN_RIGHT_BRACE && parser.current.type != TOKEN_EOF) {
         declaration();
     }
-    consume(TOKEN_RIGHT_BRACE, "Esperado '}' após bloco.");
+    consume(TOKEN_RIGHT_BRACE, "Expect '}' after block.");
 }
 
 static void beginScope() { current->scopeDepth++; }
@@ -269,28 +269,28 @@ static void endScope() {
 static void varDeclaration() {
     uint8_t global = 0;
     if (current->scopeDepth == 0) {
-        consume(TOKEN_IDENTIFIER, "Esperado nome da variável.");
+        consume(TOKEN_IDENTIFIER, "Expect variable name.");
         global = makeConstant(OBJ_VAL(copyString(parser.previous.start, parser.previous.length)));
     } else {
-        consume(TOKEN_IDENTIFIER, "Esperado nome da variável.");
+        consume(TOKEN_IDENTIFIER, "Expect variable name.");
         Local* local = &current->locals[current->localCount++];
         local->name = parser.previous;
         local->depth = current->scopeDepth;
     }
 
     if (match(TOKEN_EQUAL)) { expression(); } else { emitByte(OP_NIL); }
-    consume(TOKEN_SEMICOLON, "Esperado ';' após declaração.");
+    consume(TOKEN_SEMICOLON, "Expect ';' after variable declaration.");
 
     if (current->scopeDepth == 0) {
         emitBytes(OP_DEFINE_GLOBAL, global);
     } else {
-        // O valor já está na pilha como variável local
+        // Value is already on stack
     }
 }
 
 static void expressionStatement() {
     expression();
-    consume(TOKEN_SEMICOLON, "Esperado ';' após expressão.");
+    consume(TOKEN_SEMICOLON, "Expect ';' after expression.");
     emitByte(OP_POP);
 }
 
@@ -302,7 +302,7 @@ static int emitJump(Byte instruction) {
 
 static void patchJump(int offset) {
     int jump = currentChunk()->count - offset - 2;
-    if (jump > 65535) errorAtCurrent("Salto muito grande.");
+    if (jump > 65535) errorAtCurrent("Too much code to jump over.");
     currentChunk()->code[offset] = (jump >> 8) & 0xff;
     currentChunk()->code[offset + 1] = jump & 0xff;
 }
@@ -310,15 +310,15 @@ static void patchJump(int offset) {
 static void emitLoop(int loopStart) {
     emitByte(OP_LOOP);
     int offset = currentChunk()->count - loopStart + 2;
-    if (offset > 65535) errorAtCurrent("Corpo do loop muito grande.");
+    if (offset > 65535) errorAtCurrent("Loop body too large.");
     emitByte((offset >> 8) & 0xff);
     emitByte(offset & 0xff);
 }
 
 static void ifStatement() {
-    consume(TOKEN_LEFT_PAREN, "Esperado '(' após 'if'.");
+    consume(TOKEN_LEFT_PAREN, "Expect '(' after 'if'.");
     expression();
-    consume(TOKEN_RIGHT_PAREN, "Esperado ')' após condição.");
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after condition.");
 
     int thenJump = emitJump(OP_JUMP_IF_FALSE);
     emitByte(OP_POP);
@@ -334,9 +334,9 @@ static void ifStatement() {
 
 static void whileStatement() {
     int loopStart = currentChunk()->count;
-    consume(TOKEN_LEFT_PAREN, "Esperado '(' após 'while'.");
+    consume(TOKEN_LEFT_PAREN, "Expect '(' after 'while'.");
     expression();
-    consume(TOKEN_RIGHT_PAREN, "Esperado ')' após condição.");
+    consume(TOKEN_RIGHT_PAREN, "Expect ')' after condition.");
 
     int exitJump = emitJump(OP_JUMP_IF_FALSE);
     emitByte(OP_POP);
@@ -349,7 +349,7 @@ static void whileStatement() {
 
 static void printStatement() {
     expression();
-    consume(TOKEN_SEMICOLON, "Esperado ';' após valor.");
+    consume(TOKEN_SEMICOLON, "Expect ';' after value.");
     emitByte(OP_PRINT);
 }
 
