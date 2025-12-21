@@ -3,225 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apolo Language</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <title>Apolo Language - The Solar Scripting Language</title>
     <style>
-        :root {
-            --primary-gold: #FFD700;
-            --secondary-blue: #4169E1;
-            --text-dark: #333333;
-            --bg-light: #F9FAFB;
-            --bg-white: #FFFFFF;
-            --accent-gray: #6B7280;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.6;
+        html {
             scroll-behavior: smooth;
         }
 
-        header {
-            background-color: var(--secondary-blue);
-            color: var(--bg-white);
-            padding: 40px 20px;
-            text-align: center;
-            position: relative;
+        :root {
+            /* Paleta Dark Mode "Espacial" */
+            --bg-color: #0f172a;       /* Azul noturno profundo */
+            --sidebar-bg: #1e293b;     /* Azul ardósia escuro */
+            --text-color: #e2e8f0;     /* Cinza claro gelo */
+            
+            /* A COR SOLAR */
+            --accent-color: #fbbf24;   /* Amarelo Solar Vibrante */
+            
+            --code-bg: #020617;        /* Quase preto para código */
+            --code-text: #a5b4fc;      /* Lavanda suave para código comum */
+            --border-color: #334155;   /* Bordas sutis */
+            
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'Fira Code', 'Courier New', monospace;
         }
 
-        .logo {
-            width: 100px;
-            height: auto;
-            margin-bottom: 20px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
         }
 
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            margin: 0;
-            font-size: 3em;
-            letter-spacing: 1px;
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
         }
 
-        header p {
-            font-size: 1.2em;
-            margin: 10px 0 0;
-        }
-
-        nav {
-            margin-top: 20px;
-        }
-
-        nav a {
-            color: var(--bg-white);
+        .brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
-            margin: 0 20px;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        /* Simbolo simples do sol usando CSS puro */
+        .sun-icon {
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-color);
         }
 
-        nav a:hover {
-            color: var(--primary-gold);
-        }
-
-        section {
-            max-width: 1000px;
-            margin: 60px auto;
-            padding: 40px;
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            font-family: 'Playfair Display', serif;
-            color: var(--secondary-blue);
-            border-bottom: 3px solid var(--primary-gold);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        pre {
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            border-left: 4px solid var(--primary-gold);
-        }
-
-        code {
-            font-family: 'Courier New', monospace;
-            background-color: #f4f4f9;
-            padding: 4px 6px;
-            border-radius: 4px;
-        }
-
-        ul {
-            list-style-type: none;
+        .nav-link {
+            display: block;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
             padding-left: 0;
         }
 
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 10px;
+        .nav-link:hover { 
+            color: var(--accent-color); 
+            padding-left: 10px;
+            border-left: 2px solid var(--accent-color);
+        }
+        
+        .nav-section { 
+            margin-top: 2rem; 
+            font-weight: bold; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            color: #64748b; 
+            margin-bottom: 0.8rem; 
+            letter-spacing: 1px;
         }
 
-        ul li::before {
-            content: '➤';
-            position: absolute;
-            left: 0;
-            color: var(--primary-gold);
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 4rem;
+            max-width: 1000px;
+            width: 100%;
         }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            background-color: var(--secondary-blue);
-            color: var(--bg-white);
-            margin-top: 60px;
+        h1, h2, h3 { color: #fff; margin-bottom: 1rem; }
+        
+        h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 0.5rem; 
+            background: linear-gradient(to right, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h2 { 
+            font-size: 2rem; 
+            margin-top: 4rem; 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 0.5rem; 
+        }
+        
+        h3 { 
+            font-size: 1.3rem; 
+            margin-top: 2rem; 
+            color: var(--accent-color); 
         }
 
-        /* Responsive design */
+        p { margin-bottom: 1rem; color: #cbd5e1; font-size: 1.05rem; }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        code {
+            font-family: var(--font-mono);
+            color: var(--code-text);
+            font-size: 0.9rem;
+        }
+        
+        .inline-code {
+            background-color: rgba(251, 191, 36, 0.1); /* Amarelo muito transparente */
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--bg-color); /* Texto escuro no fundo amarelo para contraste */
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+        }
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+        }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); }
+        th { color: var(--accent-color); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5em;
-            }
-
-            nav a {
-                display: block;
-                margin: 10px 0;
-            }
-
-            section {
-                padding: 20px;
-                margin: 30px 20px;
-            }
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); padding: 1rem; }
+            .brand { justify-content: center; }
+            .main-content { margin-left: 0; padding: 2rem 1.5rem; }
+            h1 { font-size: 2.5rem; }
         }
-
-        /* Simple syntax highlighting */
-        .keyword { color: #0000ff; font-weight: bold; }
-        .string { color: #a31515; }
-        .number { color: #09885a; }
-        .comment { color: #008000; font-style: italic; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Apolo Language</h1>
-        <p>A dynamic scripting language inspired by the harmony and precision of the Greek god Apollo.</p>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#features">Features</a>
-            <a href="#docs">Documentation</a>
-            <a href="#examples">Examples</a>
-        </nav>
-    </header>
 
-    <section id="about">
-        <h2>About Apolo</h2>
-        <p>Apolo is a lightweight, interpreted programming language designed for simplicity, performance, and ease of use. Drawing inspiration from the Greek god Apollo—symbol of light, knowledge, and the arts—Apolo aims to bring clarity and elegance to scripting and rapid development.</p>
-        <p>Version: 2.0 | Date: December 19, 2025</p>
-    </section>
-
-    <section id="features">
-        <h2>Key Features</h2>
-        <ul>
-            <li>Dynamic typing supporting numbers, booleans, strings, and nil values.</li>
-            <li>Local and global variables with proper scoping.</li>
-            <li>Control structures including if-else statements and while loops.</li>
-            <li>Arithmetic, comparison, and logical operators.</li>
-            <li>Built-in I/O functions: print and input.</li>
-            <li>Interactive REPL for quick testing and experimentation.</li>
-            <li>Efficient string interning and hash table implementations.</li>
-            <li>Robust error handling for both compilation and runtime issues.</li>
-        </ul>
-    </section>
-
-    <section id="docs">
-        <h2>Documentation</h2>
-        <p>Apolo's syntax is intuitive and beginner-friendly. Below is a quick reference guide:</p>
+    <nav class="sidebar">
+        <a href="#" class="brand">
+            <div class="sun-icon"></div>
+            APOLO
+        </a>
         
-        <h3>Declaring Variables</h3>
-        <pre><code>var x = 10;
-var name = "Apolo";</code></pre>
+        <div class="nav-section">Start Here</div>
+        <a href="#introduction" class="nav-link">Introduction</a>
+        <a href="#installation" class="nav-link">Installation</a>
+        <a href="#running" class="nav-link">Running Code</a>
+
+        <div class="nav-section">Language Guide</div>
+        <a href="#variables" class="nav-link">Variables & Types</a>
+        <a href="#io" class="nav-link">Input / Output</a>
+        <a href="#control-flow" class="nav-link">Control Flow</a>
+        <a href="#comments" class="nav-link">Comments</a>
+    </nav>
+
+    <main class="main-content">
         
-        <h3>Control Flow Structures</h3>
-        <pre><code>if (x > 5) {
-    print "Greater than 5";
+        <section id="introduction" class="hero">
+            <h1>Illuminate your Logic.</h1>
+            <p style="font-size: 1.3rem; color: #94a3b8; font-weight: 300;">
+                Apolo is a lightweight, embeddable scripting language forged in C.
+            </p>
+            <p>Designed to be simple, fast, and clear—shining a light on how interpreters work under the hood.</p>
+            <a href="#installation" class="btn">Start Coding</a>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            <p>Apolo is distributed as pure C source code or as an .exe file. If you are not using Windows or wish to compile manually, you will need a standard C compiler.</p>
+
+            <h3>1. Download Source</h3>
+            <p>Clone the repository or download the source files into a folder.</p>
+
+            <h3>2. Compile</h3>
+            <p>Use the provided executable (Windows only) or compile manually with GCC/Clang (for Windows or any other system).</p>
+            <pre><code>$ gcc main.c vm.c compiler.c scanner.c chunk.c value.c object.c table.c -o apolo</code></pre>
+            <p>This will generate the <span class="inline-code">apolo</span> executable.</p>
+        </section>
+
+        <section id="running">
+            <h2>Running Code</h2>
+            
+            <h3>REPL (Sun Shell)</h3>
+            <p>Run without arguments to enter the interactive mode.</p>
+            <pre><code>$ ./apolo
+apolo > print "Dawn of a new code";
+Dawn of a new code</code></pre>
+
+            <h3>Script Execution</h3>
+            <p>Pass a file path to execute a script file.</p>
+            <pre><code>$ ./apolo main.apolo</code></pre>
+        </section>
+
+        <section id="variables">
+            <h2>Variables & Types</h2>
+            <p>Apolo is dynamically typed. Use <span class="inline-code">var</span> to declare new identifiers.</p>
+
+            <pre><code>var rays = 100;
+var star = "Sun";
+var isBright = true;
+var darkness = nil;</code></pre>
+
+            <h3>Data Types</h3>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Number</strong></td>
+                    <td>Double-precision floating point (e.g., <span class="inline-code">3.1415</span>).</td>
+                </tr>
+                <tr>
+                    <td><strong>String</strong></td>
+                    <td>Text strings enclosed in double quotes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Boolean</strong></td>
+                    <td>Logic values: <span class="inline-code">true</span> or <span class="inline-code">false</span>.</td>
+                </tr>
+                <tr>
+                    <td><strong>Nil</strong></td>
+                    <td>Represents the absence of a value.</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="io">
+            <h2>Input & Output</h2>
+            
+            <h3>Print</h3>
+            <p>Outputs text or numbers to the console.</p>
+            <pre><code>print "Hello, World";
+print 10 * 10;</code></pre>
+
+            <h3>Input</h3>
+            <p>Pauses execution to get a line of text from the user.</p>
+            <pre><code>print "Enter your name:";
+var user = input();
+print "Welcome, " + user;</code></pre>
+        </section>
+
+        <section id="control-flow">
+            <h2>Control Flow</h2>
+            
+            <h3>If / Else</h3>
+            <pre><code>var temp = 30;
+
+if (temp > 25) {
+    print "It is sunny.";
 } else {
-    print "5 or less";
-}
-
-while (x > 0) {
-    print x;
-    x = x - 1;
+    print "It is cold.";
 }</code></pre>
-        
-        <h3>Input and Output</h3>
-        <pre><code>var userInput = input();
-print "Welcome, " + userInput;</code></pre>
-        
-        <p>For complete source code, implementation details, and contributions, visit our repository.</p>
-    </section>
 
-    <section id="examples">
-        <h2>Code Examples</h2>
-        
-        <pre id="example-code"><code>var a = 5;
-var b = 3;
-print a + b;  # Outputs: 8
+            <h3>While Loop</h3>
+            <pre><code>var count = 5;
+while (count > 0) {
+    print count;
+    count = count - 1;
+}
+print "Liftoff!";</code></pre>
+        </section>
 
-var greeting = "Hello" + " World";
-print greeting;  # Outputs: Hello World</code></pre>
-    </section>
+        <section id="comments">
+            <h2>Comments</h2>
+            <p>Lines starting with <span class="inline-code">#</span> are ignored by the compiler.</p>
+            <pre><code># This is a comment about the sun
+var light = true; # Inline comment</code></pre>
+        </section>
 
-    <footer>
-        <p>Apolo Language. Open Source for Everyone.</p>
-        <p>Source available on <a href="https://github.com/ogoncas/apolo">GitHub</a></p>
-    </footer>
+        <footer style="margin-top: 5rem; border-top: 1px solid var(--border-color); padding-top: 2rem; color: #64748b; font-size: 0.9rem; text-align: center;">
+            <p>&copy; 2025 Apolo Language Team. Powered by C.</p>
+        </footer>
+
+    </main>
 </body>
 </html>
